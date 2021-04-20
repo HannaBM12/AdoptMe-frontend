@@ -1,81 +1,72 @@
 
-renderAllPets()
+const mainDiv = document.querySelector('div#pets-display')
+renderAllPetsImage()
 
-function renderAllPets(){
+function renderAllPetsImage(){
     fetch("http://localhost:3000/pets")
     .then(res => res.json())
-    .then(petsArr => petsArr.forEach(pet => {
-        renderOnePet(pet)
-    }))
+    .then(petsArr => {
+        detailPetInfo(petsArr[0])
+        petsArr.forEach(renderOnePet)
+    })
 }
 
 
 function renderOnePet(pet){
-    console.log(pet)
-    const img = document.createElement('img')
-    img.src = pet.image
-    img.alt = pet.name
-    img.dataset.id = pet.id
-
-    const divName = document.createElement('div')
-    divName.id = "pet-info"
-    divName.dataset.id = pet.id
-
-    const nameH4 = document.createElement('h4')
-    nameH4.textContent = pet.name
-    const petDiv = document.querySelector('div.card')
+    const mainDiv = document.querySelector('div#pets-display')
+    // console.log(pet)
+    // console.log(mainDiv)
     
-    const contentDiv = document.querySelector('div.content')
-    const breedPTag = document.createElement('p')
-    breedPTag.textContent = pet.breed
-    // contentDiv.appendChild(breedPTag)
-    
-    
-    petDiv.append(img, divName, contentDiv)
-    divName.append(nameH4, breedPTag)
+    const mainImg = document.createElement('img')
+    mainImg.src = pet.image
+    mainImg.alt = pet.name
+    mainImg.dataset.id = pet.id
 
-
+        
+    mainDiv.append(mainImg)  
+    
 }
 
-const mainDiv = document.querySelector('div.card')
-// console.log(mainDiv)
-
-function addDetailInfoToDiv(info){
-    const divName = document.querySelector('div#pet-info')
-    const petDetailsPTag = document.createElement('p')
-    petDetailsPTag.textContent = info
-    divName.append('p')
-}
 
 mainDiv.addEventListener('click', event => {
-    if (event.target.matches('div.card img')){
+    
+    if (event.target.matches('div#pets-display img')){
         fetch(`http://localhost:3000/pets/${event.target.dataset.id}`)
         .then(resp => resp.json())
-        .then(petObj => console.log(petObj))
+        .then(petObj => detailPetInfo(petObj))
     }
 })
 
 
+function detailPetInfo(petObj){
+    console.log(petObj)
+    const petDetailDiv = document.querySelector('div#pet-detail')
+    petDetailDiv.dataset.id = petObj.id
 
-// mainDiv.addEventListener('click', event => {
-//     if (event.target.matches('div.card img')){
-//         // console.log(event.target)
-//         fetch(`http://localhost:3000/pets/${event.target.dataset.id}`)
-//         .then (resp => resp.json())
-//         .then (data => {
-//             detailPetInfo(data)
-//         })
-//     }
-// })
+    const imgDetail = document.querySelector('div#pet-detail img.detail-image')
+    imgDetail.src = petObj.image
+    imgDetail.alt = petObj.name
 
-// function detailPetInfo(data){
-//     const divName = document.querySelector('div#pet-info')
-//     const petDetailsPTag = document.createElement('p')
-//     petDetailsPTag.textContent = data.bio
+    const nameDetail = document.querySelector('div#pet-detail h2.name')
+    nameDetail.textContent = petObj.name
 
-//     divName.append(petDetailsPTag)
-// }
+    const breedDetail = document.querySelector('div#pet-detail h3.breed')
+    breedDetail.textContent = petObj.breed
 
+    const ageDetail = document.querySelector('div#pet-detail h2.age')
+    ageDetail.textContent = `${petObj.age} Years`
+
+    const bioDetail = document.querySelector('div#pet-detail p.bio')
+    bioDetail.textContent = petObj.bio
+    
+    const isAdopted = document.querySelector('div#pet-detail h3.isAdopted')
+        if(petObj.isAdopted === false){
+            isAdopted.textContent = "Available for Adoption"
+        }
+        else {
+            isAdopted.textContent = "Already Adopted"
+        }
+}
 
 
 
