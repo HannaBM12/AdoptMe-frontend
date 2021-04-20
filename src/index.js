@@ -1,5 +1,12 @@
 
 const mainDiv = document.querySelector('div#pets-display')
+const shelterInfoBtn = document.querySelector('button.shelter-btn')
+const adoptMeBtn = document.querySelector('button.adopt-btn')
+const petDetailDiv = document.querySelector('div#pet-detail')
+const petInfoDiv = document.querySelector('div#pet-detail-info')
+// console.log(petInfoDiv)
+// console.log(shelterInfoBtn) 
+
 renderAllPetsImage()
 
 function renderAllPetsImage(){
@@ -39,8 +46,8 @@ mainDiv.addEventListener('click', event => {
 
 
 function detailPetInfo(petObj){
-    console.log(petObj)
-    const petDetailDiv = document.querySelector('div#pet-detail')
+    // console.log(petObj)
+    
     petDetailDiv.dataset.id = petObj.id
 
     const imgDetail = document.querySelector('div#pet-detail img.detail-image')
@@ -53,10 +60,10 @@ function detailPetInfo(petObj){
     const breedDetail = document.querySelector('div#pet-detail h3.breed')
     breedDetail.textContent = petObj.breed
 
-    const ageDetail = document.querySelector('div#pet-detail h2.age')
+    const ageDetail = document.querySelector('div#pet-detail-info h2.age')
     ageDetail.textContent = `${petObj.age} Years`
 
-    const bioDetail = document.querySelector('div#pet-detail p.bio')
+    const bioDetail = document.querySelector('div#pet-detail-info p.bio')
     bioDetail.textContent = petObj.bio
     
     const isAdopted = document.querySelector('div#pet-detail h3.isAdopted')
@@ -66,7 +73,52 @@ function detailPetInfo(petObj){
         else {
             isAdopted.textContent = "Already Adopted"
         }
+
+    shelterInfoBtn.dataset.id = petObj.shelterId
+    adoptMeBtn.dataset.id = petObj.id
+    // console.log(adoptMeBtn)
+    
 }
+
+//Adopt me button should have a similar functionality as the dark mode toggle from class
+
+shelterInfoBtn.addEventListener('click', event => {
+    // console.log(event.target)
+    const idOfShelter = event.target.dataset.id
+    console.log(idOfShelter)
+    fetch(`http://localhost:3000/shelters/${idOfShelter}`)
+    .then(resp => resp.json())
+    .then(data => {
+        const shelterInfoDiv = document.createElement('div')
+
+
+        shelterInfoDiv.innerHTML = `
+            <h2 class="shelter-name"> Shelter Name: ${data.name} </h2>
+            <h3 class="shelter-location"> Shelter Location: ${data.location}</h3>
+            <h3 class="shelter-description">Shelter Description: ${data.description}</h3>
+            `
+            petInfoDiv.append(shelterInfoDiv)
+        // if (shelterInfoDiv.style.display = "block"){
+        //     shelterInfoDiv.innerHTML = `
+        //     <h2 class="shelter-name"> Shelter Name: ${data.name} </h2>
+        //     <h3 class="shelter-location"> Shelter Location: ${data.location}</h3>
+        //     <h3 class="shelter-description">Shelter Description: ${data.description}</h3>
+        //     `
+        //     petInfoDiv.append(shelterInfoDiv)
+        // }
+        // else {
+        //     shelterInfoDiv.remove(data)
+        // }
+        // console.dir(shelterInfoDiv)
+        
+       
+        
+        
+        
+    })
+   
+})
+
 
 
 
