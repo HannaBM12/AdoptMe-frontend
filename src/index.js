@@ -15,11 +15,15 @@ function renderOnePet(pet){
     const img = document.createElement('img')
     img.src = pet.image
     img.alt = pet.name
+    img.dataset.id = pet.id
 
     const divName = document.createElement('div')
+    divName.id = "pet-info"
+    divName.dataset.id = pet.id
+
     const nameH4 = document.createElement('h4')
     nameH4.textContent = pet.name
-    const petDiv = document.querySelector('div.img-container')
+    const petDiv = document.querySelector('div.card')
     
     const contentDiv = document.querySelector('div.content')
     const breedPTag = document.createElement('p')
@@ -32,6 +36,64 @@ function renderOnePet(pet){
 
 
 }
+
+const mainDiv = document.querySelector('div.card')
+// console.log(mainDiv)
+
+function addDetailInfoToDiv(info){
+    const divName = document.querySelector('div#pet-info')
+    const petDetailsPTag = document.createElement('p')
+    petDetailsPTag.textContent = info
+    divName.append('p')
+}
+
+mainDiv.addEventListener('click', event => {
+    if (event.target.matches('div.card img')){
+        fetch(`http://localhost:3000/pets/${event.target.dataset.id}`)
+        .then(resp => resp.json())
+        .then(petObj => console.log(petObj))
+    }
+})
+
+
+
+// mainDiv.addEventListener('click', event => {
+//     if (event.target.matches('div.card img')){
+//         // console.log(event.target)
+//         fetch(`http://localhost:3000/pets/${event.target.dataset.id}`)
+//         .then (resp => resp.json())
+//         .then (data => {
+//             detailPetInfo(data)
+//         })
+//     }
+// })
+
+// function detailPetInfo(data){
+//     const divName = document.querySelector('div#pet-info')
+//     const petDetailsPTag = document.createElement('p')
+//     petDetailsPTag.textContent = data.bio
+
+//     divName.append(petDetailsPTag)
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
