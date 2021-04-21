@@ -9,8 +9,11 @@ const prevDiv = document.querySelector('div#prev')
 const nextDiv = document.querySelector('div#next')
 const adoptionForm = document.querySelector('form#adoption-form')
 adoptionForm.style.display = 'none'
-const ownersIdinput = document.querySelector('form input#owner-id')
-// console.log(petInfoDiv)
+const ownersIdInput = document.querySelector('form input#owner-id')
+const ownerNameInput = document.querySelector('form input#owner-name')
+const dogNameInput = document.querySelector('form input#dog-name')
+const isAdopted = document.querySelector('div#pet-detail h3.isAdopted')
+// console.log(ownerNameInput)
 // console.log(shelterInfoBtn) 
 
 renderAllPetsImage()
@@ -72,7 +75,6 @@ function detailPetInfo(petObj){
     const bioDetail = document.querySelector('div#pet-detail-info p.bio')
     bioDetail.textContent = petObj.bio
     
-    const isAdopted = document.querySelector('div#pet-detail h3.isAdopted')
         if(petObj.isAdopted === false){
             isAdopted.textContent = "Available for Adoption"
         }
@@ -86,8 +88,8 @@ function detailPetInfo(petObj){
     let dogNameInput = document.querySelector('form input#dog-name')
     dogNameInput.value = petObj.name
 
-    let dogBreedInput = document.querySelector('form input#dog-breed')
-    dogBreedInput.value = petObj.breed
+    // let dogBreedInput = document.querySelector('form input#dog-breed')
+    // dogBreedInput.value = petObj.breed
 
     // console.log(adoptMeBtn)
     
@@ -174,9 +176,11 @@ loginForm.addEventListener('submit', event =>{
             loginForm.style.display = 'none'
             currentOwner = ownersArr.find(owner => owner.email === emailInput)
             ownerId = currentOwner.id 
-            adoptMeBtn.dataset.id = ownerId
+            ownerName = currentOwner.name
             
-            ownersIdinput.dataset.id = ownerId
+            adoptMeBtn.dataset.id = ownerId
+            ownerNameInput.value = ownerName
+            ownersIdInput.dataset.id = ownerId
             
              
         }
@@ -200,10 +204,9 @@ adoptionForm.addEventListener('submit', event => {
     // console.log(event.target)
     event.preventDefault()
     
-    const ownerId = ownersIdinput.dataset.id
-    
-    const petId = adoptionForm.dataset.id 
-    console.log(ownerId, petId)
+    const owner_id = ownersIdInput.dataset.id
+    const pet_id = adoptionForm.dataset.id
+    // console.log(petName)
 
     fetch(`http://localhost:3000/adoptions`, {
         method: 'POST',
@@ -211,14 +214,34 @@ adoptionForm.addEventListener('submit', event => {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
-        body: JSON.stringify ({ ownerId, petId })
+        body: JSON.stringify ({owner_id, pet_id})
         
     })
         .then(resp => resp.json())
-        .then(data => console.log(data))
+        .then(data => {
+            updatePet(data)
+        })
 })
 
+function updatePet(data){
+    const id = data.petId
 
+    is_adopted = true
+
+    fetch(`http://localhost:3000/pets/${id}`,{
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({is_adopted})
+    })
+    .then(res => res.json())
+    .then(updatedPet => {
+        console.log(updatedPet)
+        isAdopted.textContent = 'Already Adopted'
+    })
+}
 
 
 
