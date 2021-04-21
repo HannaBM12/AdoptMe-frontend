@@ -13,6 +13,14 @@ const ownersIdInput = document.querySelector('form input#owner-id')
 const ownerNameInput = document.querySelector('form input#owner-name')
 const dogNameInput = document.querySelector('form input#dog-name')
 const isAdopted = document.querySelector('div#pet-detail h3.isAdopted')
+const shelterCommentForm = document.querySelector('form#comment-form')
+shelterCommentForm.style.display = 'none'
+const shelterInputId = document.querySelector('form input#shelter-id')
+const commentDiv = document.querySelector('div#empty-comment-div')
+console.log(commentDiv)
+
+
+// console.log(shelterCommentForm)
 // console.log(ownerNameInput)
 // console.log(shelterInfoBtn) 
 
@@ -88,6 +96,7 @@ function detailPetInfo(petObj){
     let dogNameInput = document.querySelector('form input#dog-name')
     dogNameInput.value = petObj.name
 
+
     // let dogBreedInput = document.querySelector('form input#dog-breed')
     // dogBreedInput.value = petObj.breed
 
@@ -100,37 +109,26 @@ function detailPetInfo(petObj){
 shelterInfoBtn.addEventListener('click', event => {
     // console.log(event.target)
     const idOfShelter = event.target.dataset.id
-    console.log(idOfShelter)
+    // console.log(idOfShelter)
     fetch(`http://localhost:3000/shelters/${idOfShelter}`)
     .then(resp => resp.json())
     .then(data => {
+
+        // console.log(data)
         const shelterInfoDiv = document.createElement('div')
+        shelterInfoDiv.id = "shelter-info-div"
+        shelterInputId.dataset.id = data.id 
 
-
-        shelterInfoDiv.innerHTML = `
-            <h2 class="shelter-name"> Shelter Name: ${data.name} </h2>
-            <h3 class="shelter-location"> Shelter Location: ${data.location}</h3>
-            <h3 class="shelter-description">Shelter Description: ${data.description}</h3>
-            `
-            petInfoDiv.append(shelterInfoDiv)
-
-
-        // if (shelterInfoDiv.style.display = "block"){
-        //     shelterInfoDiv.innerHTML = `
-        //     <h2 class="shelter-name"> Shelter Name: ${data.name} </h2>
-        //     <h3 class="shelter-location"> Shelter Location: ${data.location}</h3>
-        //     <h3 class="shelter-description">Shelter Description: ${data.description}</h3>
-        //     `
-        //     petInfoDiv.append(shelterInfoDiv)
-        // }
-        // else {
-        //     shelterInfoDiv.remove(data)
-        // }
-        // console.dir(shelterInfoDiv)
-                
+        
+            shelterInfoDiv.innerHTML = `
+                <h2 class="shelter-name"> Shelter Name: ${data.name} </h2>
+                <h3 class="shelter-location"> Shelter Location: ${data.location}</h3>
+                <h3 class="shelter-description">Shelter Description: ${data.description}</h3>
+               
+                `
+                petInfoDiv.append(shelterInfoDiv)
         
     })
-   
 })
 
 const navDiv = document.querySelector('div.nav-div')
@@ -181,6 +179,7 @@ loginForm.addEventListener('submit', event =>{
             adoptMeBtn.dataset.id = ownerId
             ownerNameInput.value = ownerName
             ownersIdInput.dataset.id = ownerId
+            shelterCommentForm.dataset.id = ownerId
             
              
         }
@@ -196,8 +195,10 @@ petInfoDiv.addEventListener('click', event => {
         adoptionForm.style.display = 'block'
     } else {
         adoptionForm.style.display = 'none'
-    }
+    } 
 })
+
+
 
 
 adoptionForm.addEventListener('submit', event => {
@@ -242,6 +243,53 @@ function updatePet(data){
         isAdopted.textContent = 'Already Adopted'
     })
 }
+
+petInfoDiv.addEventListener('click', event => {
+    // event.preventDefault()
+    if (event.target.matches('button.shelter-btn')){
+        shelterCommentForm.style.display = 'block'
+    } 
+    // else {
+    //     shelterCommentForm.style.display = 'none'
+    // } 
+})
+
+shelterCommentForm.addEventListener('submit', event => {
+    // console.log(event.target)
+    event.preventDefault()
+    
+    const owner_id = shelterCommentForm.dataset.id
+    const shelter_id = shelterInputId.dataset.id
+    const message = event.target.message.value 
+
+    fetch(`http://localhost:3000/comments`, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+
+        }, 
+        body: JSON.stringify({owner_id, shelter_id, message})
+    })
+    .then(resp => resp.json())
+    .then(shelterComments => {
+        renderComments(shelterComments)
+    })
+    shelterCommentForm.reset()
+})
+
+function renderComments(shelterComments) {
+    const commentUl = document.createElement('ul')
+    commentUl.innerHTML = ""
+
+    const commentList = document.createElement('li')
+    commentList.textContent = shelterComments.message
+
+    commentUl.append(commentList)
+    commentDiv.append(commentUl)
+
+}
+
 
 
 

@@ -67,6 +67,15 @@
                 <button class='shelter-btn' type='button'>Shelter Info</button>
                 <br>
                 <br>
+                <!--Comment form-->
+                <form id="comment-form" data-id="insert-user-id">
+                  <input type="hidden" id= "shelter-id" data-id = "insert-shelter-id">
+                  <label for="Add Comment">Comment: </label>
+                  <textarea name="message" required></textarea>
+                  <input type="submit" class='create-comment' value="Add Comment" />
+                  
+                 
+                 </form>
                 <!-- Adoption Form -->
                  <form id="adoption-form" data-id="insert dog ID">
                   <input type="hidden" id= "owner-id" data-id = "owner ID here">
@@ -82,6 +91,10 @@
                   <!-- <input type="submit" class='delete-button' value="Delete" />  -->
                  
                  </form>
+                 <br>
+                 <div id ="empty-comment-div">
+
+                 </div>
             </div>
     </div>
         
