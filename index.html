@@ -9,41 +9,75 @@
   </head>
 <body>
 
-    <header>
-        <h2>AdoptMe</h2>
-      </header>
-  
-      <!-- pets display -->
+    <div class="parent">
+		<div class="title-div">
+			<!-- <img src="./logo.png" alt="AdoptMe Logo"> -->
+		</div>
+
+		<div class="nav-div">
+			<button id="loginBtn">Log In</button>
+			<button id="signupBtn">Sign Up</button>
+			<button id="logoutBtn" style="display:none">Logout</button>
+			<button id="editUserBtn" style="display:none">Edit User</button>
+			<!-- <select name="occasion" id="occasion-select" class="emily">
+				<option value="">Occasion</option>
+				<option value="birthday">🎂 Birthday</option>
+				<option value="christmas">🎅🏼 Christmas</option>
+				<option value="fathers">👨 Father's Day</option>
+				<option value="hanukkah">🕎 Hanukkah</option>
+				<option value="holidays">🎁 Happy Holidays</option>
+				<option value="mothers">👩 Mother's Day</option>
+				<option value="valentines">💘 Valentine's Day</option>
+			</select><br> -->
+			<!-- <div id="glogo"><a href="https://github.com/rtetelbaum/occasionator-frontend" target="_blank"><img src="./assets/github.png" alt="GitHub"></a></div> -->
+		</div>
+
+         <!-- pets display -->
       <div id="pets-display">
+        <div id="prev">&#10094;</div>
+        <div id="next">&#10095;</div>
         <!-- pet Images Here -->
       </div>
-  
-      <!-- pet Details -->
-      <div id="pet-detail">
-        <img class="detail-image" src="./pets.jpeg" alt="Insert Name Here" />
-        <h2 class="name"> Pet Name </h2>
-        <h3 class="isAdopted"> Adoption Status</h3>
-        <h3 class="breed">Pet breed</h3>
-        <!-- <button class='delete-btn' type='button'>Delete</button> -->
-      </div>
 
-      <div id="pet-detail-info">
-        <h2 class="age"> Pet age </h2>
-        <p class="bio">Pet bio</p>
-        <button class='adopt-btn' type='button'>Adopt Me</button>
-        <button class='shelter-btn' type='button'>Shelter Info</button>
-      </div>
-  
+      <div class ="main-div">
+            <form id="login-form" autocomplete="off" style="display:none" class="pink bold">
+                <h3>Log In</h3>
+                <table>
+                    <tr>
+                        <td><label for="email"> Email</label></td>
+                        <td><input type="email" name="email" placeholder="name@example.com" /></td>
+                    </tr>
+                </table><br>
+                <input type="submit" value="Log In" />
+            </form>
+
+                <!-- pet Details -->
+            <div id="pet-detail">
+                <img class="detail-image" src="./pets.jpeg" alt="Insert Name Here" />
+                <h2 class="name"> Pet Name </h2>
+                <h3 class="isAdopted"> Adoption Status</h3>
+                <h3 class="breed">Pet breed</h3>
+                <!-- <button class='delete-btn' type='button'>Delete</button> -->
+            </div>
+
+            <div id="pet-detail-info">
+                <h2 class="age"> Pet age </h2>
+                <p class="bio">Pet bio</p>
+                <button class='adopt-btn' type='button'>Adopt Me</button>
+                <button class='shelter-btn' type='button'>Shelter Info</button>
+            </div>
+    </div>
+        
       <!-- Rating Form -->
-      <form id="ramen-rating" data-id="insert ramen ID">
+      <!-- <form id="ramen-rating" data-id="insert ramen ID">
         <label for="rating">Rating: </label>
         <input type="text" name="rating" id="rating" value="Insert Rating Here" />
         <label for="comment">Comment: </label>
         <textarea name="comment" id="comment">Insert Comment Here</textarea>
         <input type="submit" class='update-ramen' value="Update" />
-        <!-- <input type="submit" class='delete-button' value="Delete" /> -->
+        <input type="submit" class='delete-button' value="Delete" /> -->
        
-      </form>
+      <!-- </form>
   
       <form id="new-ramen">
         <h4>Add New Ramen</h4>
@@ -59,8 +93,10 @@
         <textarea name="new-comment" id="new-comment">Insert Comment Here</textarea>
         <input type="submit" value="Create" />
       
-      </form>
-  
+      </form> -->
+ </div>
+
     </body>
+
   </html>
   

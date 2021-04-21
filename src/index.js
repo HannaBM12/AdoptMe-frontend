@@ -4,6 +4,9 @@ const shelterInfoBtn = document.querySelector('button.shelter-btn')
 const adoptMeBtn = document.querySelector('button.adopt-btn')
 const petDetailDiv = document.querySelector('div#pet-detail')
 const petInfoDiv = document.querySelector('div#pet-detail-info')
+const loginForm = document.querySelector('form#login-form')
+const prevDiv = document.querySelector('div#prev')
+const nextDiv = document.querySelector('div#next')
 // console.log(petInfoDiv)
 // console.log(shelterInfoBtn) 
 
@@ -21,15 +24,12 @@ function renderAllPetsImage(){
 
 function renderOnePet(pet){
     const mainDiv = document.querySelector('div#pets-display')
-    // console.log(pet)
-    // console.log(mainDiv)
     
     const mainImg = document.createElement('img')
     mainImg.src = pet.image
     mainImg.alt = pet.name
     mainImg.dataset.id = pet.id
 
-        
     mainDiv.append(mainImg)  
     
 }
@@ -41,12 +41,15 @@ mainDiv.addEventListener('click', event => {
         fetch(`http://localhost:3000/pets/${event.target.dataset.id}`)
         .then(resp => resp.json())
         .then(petObj => detailPetInfo(petObj))
-    }
+    } else if (event.target === prevDiv) {
+		mainDiv.scrollLeft -= 300
+	} else if (event.target === nextDiv) {
+		mainDiv.scrollLeft += 300
+	}
 })
 
 
 function detailPetInfo(petObj){
-    // console.log(petObj)
     
     petDetailDiv.dataset.id = petObj.id
 
@@ -110,18 +113,60 @@ shelterInfoBtn.addEventListener('click', event => {
         //     shelterInfoDiv.remove(data)
         // }
         // console.dir(shelterInfoDiv)
-        
-       
-        
-        
+                
         
     })
    
 })
 
+const navDiv = document.querySelector('div.nav-div')
+navDiv.addEventListener('click', event =>{
+    // console.log(e.target)
+    if(event.target.matches('button#loginBtn')){
+        renderLogin()
+    } else if (event.target.matches('#logoutBtn')) {
+		renderLoggedOut()
+	} else if (event.target.matches('#signupBtn')) {
+		renderSignUp()
+	} else if (event.target.matches('#editUserBtn')) {
+		renderEditUser()
+	}
+})
 
+function renderLogin(){
 
+    mainDiv.style.display = 'none'
+    petDetailDiv.style.display = 'none'
+    petInfoDiv.style.display = 'none'
+    loginForm.style.display = ''
+}
 
+loginForm.addEventListener('submit', event =>{
+    event.preventDefault()
+
+    const emailInput = event.target.email.value
+    // console.log(typeOf(emailInput))
+
+    fetch('http://localhost:3000/owners')
+    .then(res => res.json())
+    .then(ownersArr => {
+        const emailArr = []
+        ownersArr.forEach(owner => {
+            emailArr.push(owner.email)
+        })
+        
+        if(emailArr.includes(emailInput)){
+            mainDiv.style.display = ''
+            petDetailDiv.style.display = ''
+            petInfoDiv.style.display = ''
+            loginForm.style.display = 'none'
+        }
+        else{
+            alert("Email does not match an existing account. Please try again or sign up.")
+                }
+            }
+    // loginForm.reset()
+)})
 
 
 
