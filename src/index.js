@@ -7,6 +7,9 @@ const petInfoDiv = document.querySelector('div#pet-detail-info')
 const loginForm = document.querySelector('form#login-form')
 const prevDiv = document.querySelector('div#prev')
 const nextDiv = document.querySelector('div#next')
+const adoptionForm = document.querySelector('form#adoption-form')
+adoptionForm.style.display = 'none'
+const ownersIdinput = document.querySelector('form input#owner-id')
 // console.log(petInfoDiv)
 // console.log(shelterInfoBtn) 
 
@@ -79,6 +82,13 @@ function detailPetInfo(petObj){
 
     shelterInfoBtn.dataset.id = petObj.shelterId
     adoptMeBtn.dataset.id = petObj.id
+    adoptionForm.dataset.id = petObj.id
+    let dogNameInput = document.querySelector('form input#dog-name')
+    dogNameInput.value = petObj.name
+
+    let dogBreedInput = document.querySelector('form input#dog-breed')
+    dogBreedInput.value = petObj.breed
+
     // console.log(adoptMeBtn)
     
 }
@@ -101,6 +111,8 @@ shelterInfoBtn.addEventListener('click', event => {
             <h3 class="shelter-description">Shelter Description: ${data.description}</h3>
             `
             petInfoDiv.append(shelterInfoDiv)
+
+
         // if (shelterInfoDiv.style.display = "block"){
         //     shelterInfoDiv.innerHTML = `
         //     <h2 class="shelter-name"> Shelter Name: ${data.name} </h2>
@@ -160,6 +172,13 @@ loginForm.addEventListener('submit', event =>{
             petDetailDiv.style.display = ''
             petInfoDiv.style.display = ''
             loginForm.style.display = 'none'
+            currentOwner = ownersArr.find(owner => owner.email === emailInput)
+            ownerId = currentOwner.id 
+            adoptMeBtn.dataset.id = ownerId
+            
+            ownersIdinput.dataset.id = ownerId
+            
+             
         }
         else{
             alert("Email does not match an existing account. Please try again or sign up.")
@@ -168,6 +187,36 @@ loginForm.addEventListener('submit', event =>{
     // loginForm.reset()
 )})
 
+petInfoDiv.addEventListener('click', event => {
+    if (event.target.matches('button.adopt-btn')){
+        adoptionForm.style.display = 'block'
+    } else {
+        adoptionForm.style.display = 'none'
+    }
+})
+
+
+adoptionForm.addEventListener('submit', event => {
+    // console.log(event.target)
+    event.preventDefault()
+    
+    const ownerId = ownersIdinput.dataset.id
+    
+    const petId = adoptionForm.dataset.id 
+    console.log(ownerId, petId)
+
+    fetch(`http://localhost:3000/adoptions`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify ({ ownerId, petId })
+        
+    })
+        .then(resp => resp.json())
+        .then(data => console.log(data))
+})
 
 
 
