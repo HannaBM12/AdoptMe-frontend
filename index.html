@@ -1,122 +1,121 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>AdoptMe</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script defer type="text/javascript" src="src/index.js"></script>
-    <link rel="shortcut icon" href="pets.jpeg">
-  </head>
-<body>
+    <head>
+        <meta charset="utf-8">
+        <title>AdoptMe</title>
+        <link rel="stylesheet" href="css/styles.css">
+        <script defer type="text/javascript" src="src/index.js"></script>
+        <link rel="shortcut icon" href="pets.jpeg">
+    </head>
+    <body>
 
-    <div class="parent">
-		<div class="title-div">
-			<!-- <img src="./logo.png" alt="AdoptMe Logo"> -->
-		</div>
-
-		<div class="nav-div">
-			<button id="loginBtn">Log In</button>
-			<button id="signupBtn">Sign Up</button>
-			<button id="logoutBtn" style="display:none">Logout</button>
-			<button id="editUserBtn" style="display:none">Edit User</button>
-			<!-- <select name="occasion" id="occasion-select" class="emily">
-				<option value="">Occasion</option>
-				<option value="birthday">🎂 Birthday</option>
-				<option value="christmas">🎅🏼 Christmas</option>
-				<option value="fathers">👨 Father's Day</option>
-				<option value="hanukkah">🕎 Hanukkah</option>
-				<option value="holidays">🎁 Happy Holidays</option>
-				<option value="mothers">👩 Mother's Day</option>
-				<option value="valentines">💘 Valentine's Day</option>
-			</select><br> -->
-			<!-- <div id="glogo"><a href="https://github.com/rtetelbaum/occasionator-frontend" target="_blank"><img src="./assets/github.png" alt="GitHub"></a></div> -->
-		</div>
-
-         <!-- pets display -->
-      <div id="pets-display">
-        <div id="prev">&#10094;</div>
-        <div id="next">&#10095;</div>
-        <!-- pet Images Here -->
-      </div>
-
-      <div class ="main-div">
-            <form id="login-form" autocomplete="off" style="display:none" class="pink bold">
-                <h3>Log In</h3>
-                <table>
-                    <tr>
-                        <td><label for="email"> Email</label></td>
-                        <td><input type="email" name="email" placeholder="name@example.com" /></td>
-                    </tr>
-                </table><br>
-                <input type="submit" value="Log In" />
-            </form>
-
-                <!-- pet Details -->
-            <div id="pet-detail">
-                <img class="detail-image" src="./pets.jpeg" alt="Insert Name Here" />
-                <h2 class="name"> Pet Name </h2>
-                <h3 class="isAdopted"> Adoption Status</h3>
-                <h3 class="breed">Pet breed</h3>
-                <!-- <button class='delete-btn' type='button'>Delete</button> -->
+        <div class="parent">
+            <div class="title-div">
+                <img src="./logo.png" alt="AdoptMe Logo">
             </div>
 
-            <div id="pet-detail-info">
-                <h2 class="age"> Pet age </h2>
-                <p class="bio">Pet bio</p>
-                <button class='adopt-btn' type='button'>Adopt Me</button>
-                <button class='shelter-btn' type='button'>Shelter Info</button>
-                <br>
-                <br>
-                <!--Comment form-->
-                <form id="comment-form" data-id="insert-user-id">
-                  <input type="hidden" id= "shelter-id" data-id = "insert-shelter-id">
-                  <label for="Add Comment">Comment: </label>
-                  <textarea name="message" required></textarea>
-                  <input type="submit" class='create-comment' value="Add Comment" />
-                  
-                 
-                 </form>
-                <!-- Adoption Form -->
-                 <form id="adoption-form" data-id="insert dog ID">
-                  <input type="hidden" id= "owner-id" data-id = "owner ID here">
-                  <label for="Dog name">Dog Name: </label>
-                  <input type="text" name="dog name" id="dog-name" value="Dog Name Appears Here" />
-                  <br>
-                  <label for="Owner name">Owner Name: </label>
-                  <input type="text" name="owner name" id="owner-name" value="Owner Name Appears Here" />
-                  <!-- <label for="comment">Comment: </label>
-                  <textarea name="comment" id="comment">Insert Comment Here</textarea> -->
-                  <br>
-                  <input type="submit" class='create-adoption' value="Adopt" />
-                  <!-- <input type="submit" class='delete-button' value="Delete" />  -->
-                 
-                 </form>
-                 <br>
-                 <div id ="empty-comment-div">
-
-                 </div>
+            <div class="nav-div">
+                <button id="loginBtn">Log In</button>
+                <button id="signupBtn">Sign Up</button>
+                <button id="logoutBtn" style="display:none">Logout</button>
+                <button id="editUserBtn" style="display:none">Edit User</button>
+                <!-- <select name="occasion" id="occasion-select" class="emily">
+                    <option value="">Occasion</option>
+                    <option value="birthday">🎂 Birthday</option>
+                    <option value="christmas">🎅🏼 Christmas</option>
+                    <option value="fathers">👨 Father's Day</option>
+                    <option value="hanukkah">🕎 Hanukkah</option>
+                    <option value="holidays">🎁 Happy Holidays</option>
+                    <option value="mothers">👩 Mother's Day</option>
+                    <option value="valentines">💘 Valentine's Day</option>
+                </select><br> -->
+                <!-- <div id="glogo"><a href="https://github.com/rtetelbaum/occasionator-frontend" target="_blank"><img src="./assets/github.png" alt="GitHub"></a></div> -->
             </div>
-    </div>
+
+            <!-- pets display -->
+            <div id="pets-display">
+                <div id="prev">&#10094;</div>
+                <div id="next">&#10095;</div>
+                <!-- pet Images Here -->
+            </div>
+
+            <div class ="main-div">
+                <form id="login-form" autocomplete="off" style="display:none" class="bold">
+                    <h3>Log In</h3>
+                    <table>
+                        <tr>
+                            <td><label for="email"> Email</label></td>
+                            <td><input type="email" name="email" placeholder="name@example.com" /></td>
+                        </tr>
+                    </table><br>
+                    <input type="submit" value="Log In" />
+                </form>
+
+                    <!-- pet Details -->
+                <div id="pet-detail">
+                    <img class="detail-image" src="./pets.jpeg" alt="Insert Name Here" />
+                    <h2 class="name"> Pet Name </h2>
+                    <h3 class="isAdopted"> Adoption Status</h3>
+                    <h3 class="breed">Pet breed</h3>
+                    <!-- <button class='delete-btn' type='button'>Delete</button> -->
+                </div>
+
+                <div id="pet-detail-info">
+                    <h2 class="age"> Pet age </h2>
+                    <p class="bio">Pet bio</p>
+                    <button data-adopted class='adopt-btn' data-owner type='button'>Adopt Me</button>
+                    <button class='comment-btn' type='button'>Add Comment</button>
+                    <br>
+                    <br>
+                    
+                    <div id="shelter-info-div">
+                            <h2 class="shelter-name"> Shelter Name </h2>
+                            <h3 class="shelter-location"> Shelter Location </h3>
+                            <h3 class="shelter-description">Shelter Description</h3>
+                    </div>
+                    <br>
+                    <br>
+                    <!--Comment form-->
+                    <form id="comment-form" data-id="insert-user-id">
+                            <input type="hidden" id= "shelter-id" data-id = "insert-shelter-id">
+                            <label for="Add Comment"></label>
+                            <textarea name="message" required></textarea>
+                            <input type="submit" class='create-comment' value="Add Comment"><br>
+                            <label for="update Comment">Click on Your Comment to Update</label><br>
+                        </form>
+                        <br>
+                        <div id ="comments">
+                            
+                    </div>
+                    <br>
+                    <!--Update Comment-->
+                    <form id="comment-update-form" data-id="insert-user-id">
+                        <input type="hidden" id= "shelter-id" data-id = "insert-shelter-id">
+                        <textarea name="message" required></textarea>
+                        <input type="submit" class='update-comment' value="Update Comment" />
+                    </form>
+
+                    <!-- Adoption Form -->
+                    <form id="adoption-form" data-id="insert dog ID">
+                            <input type="hidden" id= "owner-id" data-id = "owner ID here">
+                            <label for="Dog name">Dog Name: </label>
+                            <input type="text" name="dog name" id="dog-name" value="Dog Name Appears Here" />
+                            <br>
+                            <label for="Owner name">Owner Name: </label>
+                            <input type="text" name="owner name" id="owner-name" value="Owner Name Appears Here" />
+                            <!-- <label for="comment">Comment: </label>
+                            <textarea name="comment" id="comment">Insert Comment Here</textarea> -->
+                            <br>
+                            <input type="submit" class='create-adoption' value="Adopt" />
+                            <!-- <input type="submit" class='delete-button' value="Delete" />  -->
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
         
-  
-      <!-- <form id="new-ramen">
-        <h4>Add New Ramen</h4>
-        <label for="name">Name: </label>
-        <input type="text" name="name" id="new-name" />
-        <label for="restaurant">Restaurant: </label>
-        <input type="text" name="restaurant" id="new-restaurant" />
-        <label for="image">Image: </label>
-        <input type="text" name="image" id="new-image" />
-        <label for="rating">Rating: </label>
-        <input type="number" name="rating" id="new-rating" />
-        <label for="new-comment">Comment: </label>
-        <textarea name="new-comment" id="new-comment">Insert Comment Here</textarea>
-        <input type="submit" value="Create" />
-      
-      </form> --> 
- </div>
 
     </body>
 
-  </html>
+</html>
   

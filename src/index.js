@@ -1,6 +1,9 @@
 
+let ownerId
+
+
 const mainDiv = document.querySelector('div#pets-display')
-const shelterInfoBtn = document.querySelector('button.shelter-btn')
+const commentBtn = document.querySelector('button.comment-btn')
 const adoptMeBtn = document.querySelector('button.adopt-btn')
 const petDetailDiv = document.querySelector('div#pet-detail')
 const petInfoDiv = document.querySelector('div#pet-detail-info')
@@ -13,11 +16,13 @@ const ownersIdInput = document.querySelector('form input#owner-id')
 const ownerNameInput = document.querySelector('form input#owner-name')
 const dogNameInput = document.querySelector('form input#dog-name')
 const isAdopted = document.querySelector('div#pet-detail h3.isAdopted')
-const shelterCommentForm = document.querySelector('form#comment-form')
-shelterCommentForm.style.display = 'none'
+const commentForm = document.querySelector('form#comment-form')
+commentForm.style.display = 'none'
 const shelterInputId = document.querySelector('form input#shelter-id')
-const commentDiv = document.querySelector('div#empty-comment-div')
-console.log(commentDiv)
+const commentDiv = document.querySelector('div#comments')
+const updateCommentForm = document.querySelector('form#comment-update-form')
+updateCommentForm.style.display = 'none'
+// console.log(commentDiv)
 
 
 // console.log(shelterCommentForm)
@@ -52,6 +57,10 @@ function renderOnePet(pet){
 mainDiv.addEventListener('click', event => {
     
     if (event.target.matches('div#pets-display img')){
+        commentDiv.innerHTML = ""
+        commentForm.style.display = 'none'
+        updateCommentForm.style.display = 'none'
+
         fetch(`http://localhost:3000/pets/${event.target.dataset.id}`)
         .then(resp => resp.json())
         .then(petObj => detailPetInfo(petObj))
@@ -64,6 +73,7 @@ mainDiv.addEventListener('click', event => {
 
 
 function detailPetInfo(petObj){
+    // console.log(petObj)
     
     petDetailDiv.dataset.id = petObj.id
 
@@ -90,46 +100,34 @@ function detailPetInfo(petObj){
             isAdopted.textContent = "Already Adopted"
         }
 
-    shelterInfoBtn.dataset.id = petObj.shelterId
+    // shelterInfoBtn.dataset.id = petObj.shelterId
     adoptMeBtn.dataset.id = petObj.id
+    adoptMeBtn.dataset.adopted = petObj.isAdopted
     adoptionForm.dataset.id = petObj.id
     let dogNameInput = document.querySelector('form input#dog-name')
     dogNameInput.value = petObj.name
 
-
-    // let dogBreedInput = document.querySelector('form input#dog-breed')
-    // dogBreedInput.value = petObj.breed
-
     // console.log(adoptMeBtn)
-    
-}
-
-//Adopt me button should have a similar functionality as the dark mode toggle from class
-
-shelterInfoBtn.addEventListener('click', event => {
-    // console.log(event.target)
-    const idOfShelter = event.target.dataset.id
-    // console.log(idOfShelter)
-    fetch(`http://localhost:3000/shelters/${idOfShelter}`)
+    const shelterId = petObj.shelterId
+    // console.log(shelterId)
+    fetch(`http://localhost:3000/shelters/${shelterId}`)
     .then(resp => resp.json())
-    .then(data => {
+    .then(shelterData => {
+       
 
-        // console.log(data)
-        const shelterInfoDiv = document.createElement('div')
-        shelterInfoDiv.id = "shelter-info-div"
-        shelterInputId.dataset.id = data.id 
+    const shelterName = document.querySelector('div#shelter-info-div h2.shelter-name')
+    shelterName.textContent = `Shelter Name: ${shelterData.name}`
 
-        
-            shelterInfoDiv.innerHTML = `
-                <h2 class="shelter-name"> Shelter Name: ${data.name} </h2>
-                <h3 class="shelter-location"> Shelter Location: ${data.location}</h3>
-                <h3 class="shelter-description">Shelter Description: ${data.description}</h3>
-               
-                `
-                petInfoDiv.append(shelterInfoDiv)
-        
+    const shelterLocation = document.querySelector('div#shelter-info-div h3.shelter-location')
+    shelterLocation.textContent = `Location: ${shelterData.location}`
+
+    const shelterDescription = document.querySelector('div#shelter-info-div h3.shelter-description')
+    shelterDescription.textContent = `Description: ${shelterData.description}`
+    
+    shelterInputId.dataset.id = shelterData.id 
+
     })
-})
+}
 
 const navDiv = document.querySelector('div.nav-div')
 navDiv.addEventListener('click', event =>{
@@ -176,10 +174,10 @@ loginForm.addEventListener('submit', event =>{
             ownerId = currentOwner.id 
             ownerName = currentOwner.name
             
-            adoptMeBtn.dataset.id = ownerId
+            adoptMeBtn.dataset.owner = ownerId
             ownerNameInput.value = ownerName
             ownersIdInput.dataset.id = ownerId
-            shelterCommentForm.dataset.id = ownerId
+            commentForm.dataset.id = ownerId
             
              
         }
@@ -190,43 +188,38 @@ loginForm.addEventListener('submit', event =>{
     // loginForm.reset()
 )})
 
-petInfoDiv.addEventListener('click', event => {
-    if (event.target.matches('button.adopt-btn')){
-        adoptionForm.style.display = 'block'
-    } else {
-        adoptionForm.style.display = 'none'
-    } 
-})
+// AdoptMe button - Post-Adoption table/ Patch-Pets table
 
-
-
-
-adoptionForm.addEventListener('submit', event => {
-    // console.log(event.target)
-    event.preventDefault()
-    
-    const owner_id = ownersIdInput.dataset.id
-    const pet_id = adoptionForm.dataset.id
-    // console.log(petName)
-
-    fetch(`http://localhost:3000/adoptions`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify ({owner_id, pet_id})
+adoptMeBtn.addEventListener('click', event => {
+    console.log(adoptMeBtn.dataset.adopted)
+         if(adoptMeBtn.dataset.adopted === true){
+             alert('This pet is already adopted, please choose another pet!!')
+            } 
+        else {
+            const owner_id = adoptMeBtn.dataset.owner
+            const pet_id = adoptMeBtn.dataset.id
         
-    })
-        .then(resp => resp.json())
-        .then(data => {
-            updatePet(data)
-        })
+    
+            fetch(`http://localhost:3000/adoptions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify ({owner_id, pet_id})
+                
+            })
+                .then(resp => resp.json())
+                .then(data => {
+                    // console.log(data)
+                    updatePet(data)
+                })
+        }
+    
 })
 
 function updatePet(data){
     const id = data.petId
-
     is_adopted = true
 
     fetch(`http://localhost:3000/pets/${id}`,{
@@ -239,26 +232,30 @@ function updatePet(data){
     })
     .then(res => res.json())
     .then(updatedPet => {
-        console.log(updatedPet)
+        // console.log(updatedPet)
         isAdopted.textContent = 'Already Adopted'
     })
 }
 
-petInfoDiv.addEventListener('click', event => {
+
+// Comment button 
+
+commentBtn.addEventListener('click', event => {
     // event.preventDefault()
-    if (event.target.matches('button.shelter-btn')){
-        shelterCommentForm.style.display = 'block'
+    if (event.target.matches('button.comment-btn')){
+        commentDiv.innerHTML = ""
+        commentForm.style.display = 'block'
     } 
-    // else {
-    //     shelterCommentForm.style.display = 'none'
-    // } 
+    else {
+        commentForm.style.display = 'none'
+    } 
 })
 
-shelterCommentForm.addEventListener('submit', event => {
-    // console.log(event.target)
+commentForm.addEventListener('submit', event => {
+    console.log(event.target)
     event.preventDefault()
     
-    const owner_id = shelterCommentForm.dataset.id
+    const owner_id = commentForm.dataset.id
     const shelter_id = shelterInputId.dataset.id
     const message = event.target.message.value 
 
@@ -272,21 +269,50 @@ shelterCommentForm.addEventListener('submit', event => {
         body: JSON.stringify({owner_id, shelter_id, message})
     })
     .then(resp => resp.json())
-    .then(shelterComments => {
-        renderComments(shelterComments)
+    .then(ownerComments => {
+        renderComments(ownerComments)
     })
-    shelterCommentForm.reset()
+    commentForm.reset()
 })
 
-function renderComments(shelterComments) {
+function renderComments(ownerComments) {
+    console.log(ownerComments)
     const commentUl = document.createElement('ul')
-    commentUl.innerHTML = ""
 
     const commentList = document.createElement('li')
-    commentList.textContent = shelterComments.message
-
+    commentList.textContent = ownerComments.message
+   
     commentUl.append(commentList)
     commentDiv.append(commentUl)
+
+    commentList.addEventListener('click', e=>{
+        updateCommentForm.style.display = 'block'
+        // const updateTextarea = updateCommentForm.querySelector('textarea')
+        updateCommentForm.message.value = e.target.textContent
+        
+        updateCommentForm.addEventListener('submit', e=>{
+            e.preventDefault()
+            const message = e.target.message.value
+            console.log(message)
+    
+            const id= ownerComments.id
+            
+            fetch(`http://localhost:3000/comments/${id}`,{
+                method: 'PATCH',
+                headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+    
+            }, 
+            body: JSON.stringify({message})
+                })
+                .then(res => res.json())
+                .then(updatedComment => {
+                    commentList.textContent = updatedComment.message
+                })
+            updateCommentForm.reset() 
+        })
+    })
 
 }
 
@@ -303,28 +329,3 @@ function renderComments(shelterComments) {
 
 
 
-
-
-// function renderOneCard(articleObj) {
-//     const outerDiv = document.createElement('div')
-//     outerDiv.classList.add('card')
-//     outerDiv.dataset.id = articleObj.id
-//     outerDiv.innerHTML = `<div class="img-container">
-//         <img src="${articleObj.image}"
-//             alt="${articleObj.title}" />
-//         <div class="article-title-container">
-//             <h4>${articleObj.title}</h4>
-//         </div>
-//     </div>
-//     <div class="content">
-//         <p class='author'>Author: ${articleObj.author}</p>
-//         <div class="scroll">
-//             <p class='description'>${articleObj.description}</p>
-//         </div>
-//         <p class="react-count">${articleObj.likes} likes</p>
-//         <button class="like-button">♥️ Like</button>
-//         <button class='delete-button'>X</button>
-//     </div>`
-//     const collectionDiv = document.querySelector('div#collection')
-//     collectionDiv.append(outerDiv)
-// }
