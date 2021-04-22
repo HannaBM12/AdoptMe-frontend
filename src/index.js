@@ -17,7 +17,15 @@ const shelterCommentForm = document.querySelector('form#comment-form')
 shelterCommentForm.style.display = 'none'
 const shelterInputId = document.querySelector('form input#shelter-id')
 const commentDiv = document.querySelector('div#empty-comment-div')
-console.log(commentDiv)
+// console.log(commentDiv)
+const petSelect = document.querySelector('select#pet-select')
+const dogSelected = document.querySelector('#dog-selected')
+const signupForm = document.querySelector('#signup-form')
+const logOutBtn = document.querySelector('button#logoutBtn')
+const loginBtn = document.querySelector('button#loginBtn')
+const deleteUserBtn = document.querySelector('button#deleteUserBtn')
+const signupBtn = document.querySelector('button#signupBtn')
+console.log(deleteUserBtn)
 
 
 // console.log(shelterCommentForm)
@@ -30,6 +38,7 @@ function renderAllPetsImage(){
     fetch("http://localhost:3000/pets")
     .then(res => res.json())
     .then(petsArr => {
+        console.log(petsArr)
         detailPetInfo(petsArr[0])
         petsArr.forEach(renderOnePet)
     })
@@ -41,7 +50,7 @@ function renderOnePet(pet){
     
     const mainImg = document.createElement('img')
     mainImg.src = pet.image
-    mainImg.alt = pet.name
+    mainImg.alt = pet.animalType
     mainImg.dataset.id = pet.id
 
     mainDiv.append(mainImg)  
@@ -64,6 +73,8 @@ mainDiv.addEventListener('click', event => {
 
 
 function detailPetInfo(petObj){
+
+    // console.log(petObj)
     
     petDetailDiv.dataset.id = petObj.id
 
@@ -140,8 +151,8 @@ navDiv.addEventListener('click', event =>{
 		renderLoggedOut()
 	} else if (event.target.matches('#signupBtn')) {
 		renderSignUp()
-	} else if (event.target.matches('#editUserBtn')) {
-		renderEditUser()
+	} else if (event.target.matches('#deleteUserBtn')) {
+		renderDeleteUser()
 	}
 })
 
@@ -151,7 +162,73 @@ function renderLogin(){
     petDetailDiv.style.display = 'none'
     petInfoDiv.style.display = 'none'
     loginForm.style.display = ''
+    logOutBtn.style.display = ''
+    loginBtn.style.display = 'none'
+    deleteUserBtn.style.display = ''
+    signupForm.style.display = 'none'
+    signupBtn.style.display = 'none'
+    
+    
+    
 }
+
+function renderSignUp (){
+
+    mainDiv.style.display = 'none'
+    petDetailDiv.style.display = 'none'
+    petInfoDiv.style.display = 'none'
+    signupForm.style.display = ''
+    deleteUserBtn.style.display = 'none'
+}
+
+function renderLoggedOut(){
+    mainDiv.style.display = ''
+    petDetailDiv.style.display = ''
+    petInfoDiv.style.display = 'none'
+    loginBtn.style.display = ''
+    logOutBtn.style.display = 'none'
+    deleteUserBtn.style.display = 'none'
+    signupBtn.style.display = ''
+
+    alert('You are successfully logged out.')
+
+}
+
+function renderDeleteUser(){
+    mainDiv.style.display = ''
+    petDetailDiv.style.display = ''
+    petInfoDiv.style.display = 'none'
+    loginBtn.style.display = ''
+    logOutBtn.style.display = 'none'
+    deleteUserBtn.style.display = ''
+}
+
+////signup still in progress 
+signupForm.addEventListener('submit', event => {
+    event.preventDefault()
+
+    newOwnerObj = {
+        email: event.target.email.value,
+        name: event.target.name.value,
+        location: event.target.location.value,
+        age: parseInt(event.target.age.value)
+    }
+    // console.log(newOwnerObj)
+
+    fetch('http://localhost:3000/owners', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(newOwnerObj)
+    })
+        .then(resp => resp.json())
+        // .then(data => console.log(data))
+
+    signupForm.reset()
+
+})
 
 loginForm.addEventListener('submit', event =>{
     event.preventDefault()
@@ -180,6 +257,7 @@ loginForm.addEventListener('submit', event =>{
             ownerNameInput.value = ownerName
             ownersIdInput.dataset.id = ownerId
             shelterCommentForm.dataset.id = ownerId
+            deleteUserBtn.dataset.id = ownerId 
             
              
         }
@@ -239,7 +317,7 @@ function updatePet(data){
     })
     .then(res => res.json())
     .then(updatedPet => {
-        console.log(updatedPet)
+        // console.log(updatedPet)
         isAdopted.textContent = 'Already Adopted'
     })
 }
@@ -289,6 +367,28 @@ function renderComments(shelterComments) {
     commentDiv.append(commentUl)
 
 }
+
+deleteUserBtn.addEventListener('click', event => {
+    // console.log(event.target)
+    const id = deleteUserBtn.dataset.id 
+
+    fetch(`http://localhost:3000/owners/${id}`, {
+        method: 'DELETE'
+    })
+    .then(resp => resp.json())
+    // .then(data => console.log(data))
+    
+    alert ("Your account is deleted, please signup!")
+    
+    
+})
+
+
+// dogSelected.addEventListener('click', event => {
+//     // console.log('clicked')
+//     // const scrollDogs = document.querySelector('img[alt="Dog"]')
+//     document.querySelector('img[alt="Dog"]').scrollIntoView()
+// })
 
 
 

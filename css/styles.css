@@ -34,11 +34,20 @@
 	background-color: lightblue;
 }
 
+.adopt-me-logo {
+  display: flex;
+  max-width: 50%;
+
+}
+
+
+
 .nav-div {
 	display: flex;
 	flex-direction: column;
 	background-color: lightblue;
 	height: 100%;
+
 }
 
 .nav-div button {
@@ -165,7 +174,7 @@
 
 .main-div::after {
   content: "";
-  background: url(./background.jpg);
+  background: url(background.jpeg);
   opacity: 0.3;
   top: 0;
   left: 0;

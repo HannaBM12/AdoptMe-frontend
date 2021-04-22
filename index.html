@@ -11,24 +11,21 @@
 
     <div class="parent">
 		<div class="title-div">
-			<!-- <img src="./logo.png" alt="AdoptMe Logo"> -->
+			<img src="new-logo.png" alt="AdoptMe Logo" class="adopt-me-logo">
 		</div>
 
 		<div class="nav-div">
 			<button id="loginBtn">Log In</button>
 			<button id="signupBtn">Sign Up</button>
 			<button id="logoutBtn" style="display:none">Logout</button>
-			<button id="editUserBtn" style="display:none">Edit User</button>
-			<!-- <select name="occasion" id="occasion-select" class="emily">
-				<option value="">Occasion</option>
-				<option value="birthday">🎂 Birthday</option>
-				<option value="christmas">🎅🏼 Christmas</option>
-				<option value="fathers">👨 Father's Day</option>
-				<option value="hanukkah">🕎 Hanukkah</option>
-				<option value="holidays">🎁 Happy Holidays</option>
-				<option value="mothers">👩 Mother's Day</option>
-				<option value="valentines">💘 Valentine's Day</option>
-			</select><br> -->
+			<button id="deleteUserBtn" style="display:none">Delete Account</button>
+			<select name="pets" id="pet-select" class="pet-options">
+				<option value="">Pets</option>
+				<option value="Dogs" id="dog-selected">🐕 Dogs </option>
+				<option value="Cats" id="cat-selected">🐈 Cats </option>
+				<option value="Birds" id="bird-selected">🐦 Birds </option>
+				
+			</select><br> 
 			<!-- <div id="glogo"><a href="https://github.com/rtetelbaum/occasionator-frontend" target="_blank"><img src="./assets/github.png" alt="GitHub"></a></div> -->
 		</div>
 
@@ -50,6 +47,29 @@
                 </table><br>
                 <input type="submit" value="Log In" />
             </form>
+            <br>
+            <form id="signup-form" autocomplete="off" style="display:none" class="pink bold">
+              <h3>Sign Up</h3>
+              <table>
+                <tr>
+                  <td><label for="email"> Email</label></td>
+                  <td><input type="email" name="email" placeholder="email here" /></td>
+                </tr>
+                <tr>
+                  <td><label for="name">Name</label></td>
+                  <td><input type="name" name="name" placeholder="first and last" /></td>
+                </tr>
+                <tr>
+                  <td><label for="location">location</label></td>
+                  <td><input type="location" name="location" placeholder="Anywhere, USA" /></td>
+                </tr>
+                <tr>
+                  <td><label for="age">Age</label></td>
+                  <td><input type="age" name="age" placeholder="0" /></td>
+                </tr>
+              </table><br>
+              <input type="submit" value="Sign Up" />
+            </form>
 
                 <!-- pet Details -->
             <div id="pet-detail">
@@ -60,7 +80,7 @@
                 <!-- <button class='delete-btn' type='button'>Delete</button> -->
             </div>
 
-            <div id="pet-detail-info">
+            <div id="pet-detail-info"style="display:none">
                 <h2 class="age"> Pet age </h2>
                 <p class="bio">Pet bio</p>
                 <button class='adopt-btn' type='button'>Adopt Me</button>
