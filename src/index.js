@@ -1,7 +1,6 @@
 
 let ownerId
 
-
 const mainDiv = document.querySelector('div#pets-display')
 const commentBtn = document.querySelector('button.comment-btn')
 const adoptMeBtn = document.querySelector('button.adopt-btn')
@@ -19,7 +18,9 @@ const isAdopted = document.querySelector('div#pet-detail h3.isAdopted')
 const commentForm = document.querySelector('form#comment-form')
 commentForm.style.display = 'none'
 const shelterInputId = document.querySelector('form input#shelter-id')
-const commentDiv = document.querySelector('div#empty-comment-div')
+const commentDiv = document.querySelector('div#comments')
+const updateCommentForm = document.querySelector('form#comment-update-form')
+updateCommentForm.style.display = 'none'
 // console.log(commentDiv)
 const petSelect = document.querySelector('select#pet-select')
 const dogSelected = document.querySelector('#dog-selected')
@@ -28,7 +29,7 @@ const logOutBtn = document.querySelector('button#logoutBtn')
 const loginBtn = document.querySelector('button#loginBtn')
 const deleteUserBtn = document.querySelector('button#deleteUserBtn')
 const signupBtn = document.querySelector('button#signupBtn')
-console.log(deleteUserBtn)
+// console.log(commentDiv)
 
 
 // console.log(shelterCommentForm)
@@ -41,7 +42,7 @@ function renderAllPetsImage(){
     fetch("http://localhost:3000/pets")
     .then(res => res.json())
     .then(petsArr => {
-        console.log(petsArr)
+        // console.log(petsArr)
         detailPetInfo(petsArr[0])
         petsArr.forEach(renderOnePet)
     })
@@ -64,8 +65,8 @@ function renderOnePet(pet){
 mainDiv.addEventListener('click', event => {
     
     if (event.target.matches('div#pets-display img')){
-        commentDiv.innerHTML = ""
-        commentForm.style.display = 'none'
+        // commentDiv.innerHTML = ""
+        // commentForm.style.display = 'none'
         updateCommentForm.style.display = 'none'
 
         fetch(`http://localhost:3000/pets/${event.target.dataset.id}`)
@@ -132,6 +133,19 @@ function detailPetInfo(petObj){
     shelterDescription.textContent = `Description: ${shelterData.description}`
     
     shelterInputId.dataset.id = shelterData.id 
+    console.log(shelterData.comments)
+    // commentDiv.style.display = 'block'
+    // listComment.innerText = shelterData.comments.message
+    // console.log(listComment)
+    shelterData.comments.forEach(comment =>{
+        const commentUl= document.querySelector('ul.ul-list')
+        const listComment = document.createElement('li')
+        listComment.textContent = comment.message
+        commentUl.append(listComment)
+
+        // console.log(comment.message)
+    })
+    // console.log(petObj)
 
     })
 }
@@ -250,7 +264,7 @@ loginForm.addEventListener('submit', event =>{
             adoptMeBtn.dataset.owner = ownerId
             ownerNameInput.value = ownerName
             ownersIdInput.dataset.id = ownerId
-            shelterCommentForm.dataset.id = ownerId
+            commentForm.dataset.id = ownerId
             deleteUserBtn.dataset.id = ownerId 
             
              
@@ -317,7 +331,7 @@ function updatePet(data){
 commentBtn.addEventListener('click', event => {
     // event.preventDefault()
     if (event.target.matches('button.comment-btn')){
-        commentDiv.innerHTML = ""
+        // commentDiv.innerHTML = ""
         commentForm.style.display = 'block'
     } 
     else {
@@ -390,8 +404,16 @@ function renderComments(ownerComments) {
 
 }
 
+deleteUserBtn.addEventListener('click', event =>{
+    const id = deleteUserBtn.dataset.id
+    console.log(id)
 
-
+    fetch(`http://localhost:3000/owners/${id}`, {
+        method: 'DELETE'
+    })
+    .then(res => res.json())
+    alert("Your account has been deleted, please signUp!")
+})
 
 
 

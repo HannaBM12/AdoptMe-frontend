@@ -80,7 +80,7 @@
                     <!-- <button class='delete-btn' type='button'>Delete</button> -->
                 </div>
 
-                <div id="pet-detail-info">
+                <div id="pet-detail-info" style="display:none">
                     <h2 class="age"> Pet age </h2>
                     <p class="bio">Pet bio</p>
                     <button data-adopted class='adopt-btn' data-owner type='button'>Adopt Me</button>
@@ -102,10 +102,12 @@
                             <textarea name="message" required></textarea>
                             <input type="submit" class='create-comment' value="Add Comment"><br>
                             <label for="update Comment">Click on Your Comment to Update</label><br>
-                        </form>
+                    </form>
                         <br>
-                        <div id ="comments">
-                            
+                    <div id ="comments">
+                           <ul class='ul-list'>
+                               <li class='list'></li>
+                           </ul> 
                     </div>
                     <br>
                     <!--Update Comment-->
