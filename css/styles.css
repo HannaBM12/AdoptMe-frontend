@@ -36,7 +36,7 @@
 
 .adopt-me-logo {
   display: flex;
-  max-width: 50%;
+  max-width: 95%;
 
 }
 
@@ -82,8 +82,8 @@
 	color: lightblue;
 }
 
-#glogo {
-	text-align: center;
+.ul-list {
+	text-align: left;
 }
   
   #pets-display {
@@ -109,7 +109,7 @@
   }
   
   .detail-image {
-    height: 350px;
+    height: 450px;
     /* width: 350px; */
   }
   
@@ -136,7 +136,7 @@
     bottom: 20px;
   }
 
-  #login-form, #signup-form, #email-form, #reminder-form, #editReminderForm, #edit-user-form {
+  #login-form, #signup-form {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

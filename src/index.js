@@ -8,6 +8,7 @@ const petDetailDiv = document.querySelector('div#pet-detail')
 const petInfoDiv = document.querySelector('div#pet-detail-info')
 const loginForm = document.querySelector('form#login-form')
 const prevDiv = document.querySelector('div#prev')
+console.log(prevDiv)
 const nextDiv = document.querySelector('div#next')
 const adoptionForm = document.querySelector('form#adoption-form')
 adoptionForm.style.display = 'none'
@@ -22,13 +23,14 @@ const commentDiv = document.querySelector('div#comments')
 const updateCommentForm = document.querySelector('form#comment-update-form')
 updateCommentForm.style.display = 'none'
 // console.log(commentDiv)
-const petSelect = document.querySelector('select#pet-select')
+// const petSelect = document.querySelector('select#pet-select')
 const dogSelected = document.querySelector('#dog-selected')
 const signupForm = document.querySelector('#signup-form')
 const logOutBtn = document.querySelector('button#logoutBtn')
 const loginBtn = document.querySelector('button#loginBtn')
 const deleteUserBtn = document.querySelector('button#deleteUserBtn')
 const signupBtn = document.querySelector('button#signupBtn')
+const petSelect = document.querySelector('#pet-select')
 // console.log(commentDiv)
 
 
@@ -51,14 +53,13 @@ function renderAllPetsImage(){
 
 function renderOnePet(pet){
     const mainDiv = document.querySelector('div#pets-display')
-    
     const mainImg = document.createElement('img')
     mainImg.src = pet.image
     mainImg.alt = pet.animalType
     mainImg.dataset.id = pet.id
-
-    mainDiv.append(mainImg)  
     
+    mainDiv.append(mainImg)  
+  
 }
 
 
@@ -66,7 +67,7 @@ mainDiv.addEventListener('click', event => {
     
     if (event.target.matches('div#pets-display img')){
         // commentDiv.innerHTML = ""
-        // commentForm.style.display = 'none'
+        commentForm.style.display = 'none'
         updateCommentForm.style.display = 'none'
 
         fetch(`http://localhost:3000/pets/${event.target.dataset.id}`)
@@ -138,7 +139,10 @@ function detailPetInfo(petObj){
     // listComment.innerText = shelterData.comments.message
     // console.log(listComment)
     shelterData.comments.forEach(comment =>{
+        // renderComments(comment)
+        // commentUl.innerHTML = ''
         const commentUl= document.querySelector('ul.ul-list')
+        commentUl.innerHTML = ''
         const listComment = document.createElement('li')
         listComment.textContent = comment.message
         commentUl.append(listComment)
@@ -198,7 +202,7 @@ function renderLoggedOut(){
     deleteUserBtn.style.display = 'none'
     signupBtn.style.display = ''
 
-    alert('You are successfully logged out.')
+    alert('Thank you for visiting us!!')
 
 }
 
@@ -233,7 +237,7 @@ signupForm.addEventListener('submit', event => {
     })
         .then(resp => resp.json())
         // .then(data => console.log(data))
-
+        alert('Thanks for Signing Up! Please login')
     signupForm.reset()
 
 })
@@ -365,12 +369,14 @@ commentForm.addEventListener('submit', event => {
 
 function renderComments(ownerComments) {
     console.log(ownerComments)
-    const commentUl = document.createElement('ul')
+    const commentUl= document.querySelector('ul.ul-list')
 
+    // const commentUl = document.createElement('ul')
     const commentList = document.createElement('li')
     commentList.textContent = ownerComments.message
-   
+    
     commentUl.append(commentList)
+    // commentUl.innerHTML = ''
     commentDiv.append(commentUl)
 
     commentList.addEventListener('click', e=>{
@@ -412,16 +418,51 @@ deleteUserBtn.addEventListener('click', event =>{
         method: 'DELETE'
     })
     .then(res => res.json())
+    .then(deletedUser => console.log(deletedUser))
     alert("Your account has been deleted, please signUp!")
 })
 
 
+petSelect.addEventListener('change', e =>{
+    let petType = e.target.value
+    selectPets(petType)
+
+    
+})
+
+function selectPets(petType){
+    mainDiv.innerHTML = `
+                <div id="prev">&#10094;</div>
+                <div id="next">&#10095;</div>
+    `
+    mainDiv.addEventListener('click', event =>{
+        if (event.target === prevDiv) {
+            mainDiv.scrollLeft -= 1000
+         } else if (event.target === nextDiv) {
+            mainDiv.scrollLeft += 1000
+        }
+    })
+
+    fetch('http://localhost:3000/pets')
+    .then(res => res.json())
+    .then(petsArr =>{
+    
+        const sortedPet = petsArr.filter(pet => pet.animalType === petType)
+        if(sortedPet.length === 0){
+            renderAllPetsImage()
+        } else {
+
+            sortedPet.forEach(pet => {
+                // console.log(pet)
+                renderOnePet(pet)
+            })
+        }
+    
+        
+    })
+          
 
 
-
-
-
-
-
+}
 
 
