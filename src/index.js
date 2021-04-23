@@ -31,7 +31,8 @@ const loginBtn = document.querySelector('button#loginBtn')
 const deleteUserBtn = document.querySelector('button#deleteUserBtn')
 const signupBtn = document.querySelector('button#signupBtn')
 const petSelect = document.querySelector('#pet-select')
-// console.log(commentDiv)
+const deleteCommentBtn = document.querySelector('.delete-comment')
+// console.log(deleteCommentBtn)
 
 
 // console.log(shelterCommentForm)
@@ -283,11 +284,7 @@ loginForm.addEventListener('submit', event =>{
 // AdoptMe button - Post-Adoption table/ Patch-Pets table
 
 adoptMeBtn.addEventListener('click', event => {
-    console.log(adoptMeBtn.dataset.adopted)
-         if(adoptMeBtn.dataset.adopted === true){
-             alert('This pet is already adopted, please choose another pet!!')
-            } 
-        else {
+   
             const owner_id = adoptMeBtn.dataset.owner
             const pet_id = adoptMeBtn.dataset.id
         
@@ -303,10 +300,13 @@ adoptMeBtn.addEventListener('click', event => {
             })
                 .then(resp => resp.json())
                 .then(data => {
-                    // console.log(data)
                     updatePet(data)
-                })
-        }
+
+                    if(data.isAdopted === true){
+                        alert('This pet is already adopted, please choose another pet!!')
+                       } 
+                    })
+        
     
 })
 
@@ -402,13 +402,38 @@ function renderComments(ownerComments) {
                 })
                 .then(res => res.json())
                 .then(updatedComment => {
+                    // deleteComment(updatedComment)
                     commentList.textContent = updatedComment.message
+                    updateCommentForm.addEventListener('click', e =>{   
+            
+                        if(e.target.matches('.delete-comment')){
+                            const id = updatedComment.id
+                            
+                            fetch(`http://localhost:3000/comments/${id}`, {
+                                method: "DELETE"
+                            })
+                            .then(res => res.json())
+                            .then (deletedComment =>{
+                                console.log(deletedComment)
+                                commentList.remove()
+                            })
+                            // deleteComment(comment)
+                        }
+            
+                    })
                 })
             updateCommentForm.reset() 
         })
     })
 
 }
+
+
+// function deleteComment(comment){
+// }
+
+
+
 
 deleteUserBtn.addEventListener('click', event =>{
     const id = deleteUserBtn.dataset.id
